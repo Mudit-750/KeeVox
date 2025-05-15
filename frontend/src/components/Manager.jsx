@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { ToastContainer, toast, Slide, Flip, Zoom, Bounce} from 'react-toastify';
+import { toast, Zoom, Bounce} from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import eye from '../assets/eye.png'
 import eyecross from '../assets/eyecross.png'
@@ -9,6 +9,7 @@ const Manager = ({isDark}) => {
   const [form, setForm] = useState({site:"",username:"",password:""})
   const [passwordArray, setPasswordArray] = useState([])
   const [visiblePasswords, setVisiblePasswords] = useState({});
+  const [loading, setLoading] = useState(true);
 
 useEffect(() => {
   const loadPasswords = async () => {
@@ -23,6 +24,8 @@ useEffect(() => {
       if (local) {
         setPasswordArray(JSON.parse(local));
       }
+    }finally {
+      setLoading(false);  // Loading finished regardless of success/failure
     }
   };
   loadPasswords();
@@ -46,6 +49,7 @@ useEffect(() => {
       localStorage.setItem('passwords', JSON.stringify(updatedArray));
 
       try {
+         toast('㊗️ Password Saved!', { theme: isDark ? 'light' : 'dark' });
         if (isEdit) {
           await fetch("http://localhost:3000/", {method: "DELETE",headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id }),
@@ -54,13 +58,11 @@ useEffect(() => {
         await fetch("http://localhost:3000/", {method: "POST",headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newEntry),
         });
+        
       } catch (error) {
         console.error("Failed to save to DB", error);
-        toast.error("Saved locally, but failed to sync with DB", { theme: isDark ? 'light' : 'dark' });
       }
-
       setForm({ site: "", username: "", password: "" });
-      toast('㊗️ Password Saved!', { theme: isDark ? 'light' : 'dark' });
     } else {
       toast.error('Password Not Saved', { theme: isDark ? 'light' : 'dark' });
     }
@@ -71,14 +73,14 @@ useEffect(() => {
    setPasswordArray(new_array);
    localStorage.setItem('passwords', JSON.stringify(new_array));
    try {
+    toast('🗑️ Password Deleted!', { theme: isDark ? 'light' : 'dark',transition:Zoom });
     await fetch("http://localhost:3000/",{ method: "DELETE", headers: { "Content-Type": "application/json" }, 
       body: JSON.stringify({ id }) 
       });
   } catch (error) {
     console.error("Failed to delete from DB", error);
-    toast.error("Deleted locally, but failed to sync with DB");
   }
-  toast('🗑️ Password Deleted!', { theme: isDark ? 'light' : 'dark',transition:Zoom });
+  
   }
   
   const editPassword = (id) => {
@@ -101,11 +103,15 @@ useEffect(() => {
   setVisiblePasswords(v => ({...v, [id]: !v[id]}));
   };
 
+  const Spinner = () => (
+  <div role="status" aria-label="Loading passwords" className="flex justify-center items-center py-20" >
+    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
+  </div> );
+
   return (
   
     
   <div className=' flex flex-col flex-grow '>
-    <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick={true} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Slide} style={{ marginTop: '50px' }}/>
   <div className="md:container mx-auto max-w-[300px] md:max-w-[550px]  lg:max-w-6xl lg:px-40 pt-6 ">
     <h1 className='text-3xl font-bold text-center min-w-32'>
       <span className='text-green-400'>&lt; </span>
@@ -130,8 +136,8 @@ useEffect(() => {
   </div>
    <div className="passwords container  xl:mx-auto max-w-auto sm:max-w-[500px] lg:max-w-7xl pl-5 sm:px-5 md:px-18 xl:px-36 pb-14 overflow-x-auto md:overflow-x-visible">
       <h2 className='font-bold text-xl py-4 pl-2'>Your Passwords</h2>
-      {passwordArray.length === 0 && <div>No Passwords to show</div>}
-      {passwordArray.length != 0 &&  <table className="table-auto w-full rounded-sm  ">
+      {loading? (<Spinner/>):passwordArray.length === 0 ? (<div>No passwords to show</div>):
+      <table className="table-auto w-full rounded-sm  ">
       <thead className='bg-green-700 text-white'>
         <tr>
           <th className='py-2'>Site</th>
