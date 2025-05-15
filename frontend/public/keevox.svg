@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10B981" />
+      <stop offset="1" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded background -->
+  <rect width="64" height="64" rx="12" fill="url(#bgGradient)" />
+
+  <!-- Lock body -->
+  <rect x="18" y="28" width="28" height="20" rx="4" fill="white"/>
+  
+  <!-- Lock shackle -->
+  <path d="M24 28V22C24 18.6863 26.6863 16 30 16C33.3137 16 36 18.6863 36 22V28H34V22C34 19.7909 32.2091 18 30 18C27.7909 18 26 19.7909 26 22V28H24Z" fill="white"/>
+
+  <!-- Keyhole -->
+  <circle cx="30" cy="38" r="2" fill="#10B981"/>
+  <rect x="29" y="38" width="2" height="6" rx="1" fill="#10B981"/>
+
+  <!-- KeeVox label -->
+  <text x="32" y="60" text-anchor="middle" font-size="10" fill="white" font-family="sans-serif" font-weight="600">
+    KeeVox
+  </text>
+</svg>

@@ -1,0 +1,13 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Central circle -->
+  <circle cx="40" cy="40" r="16" fill="black"/>
+  <!-- Rays (thick lines) -->
+  <rect x="38" y="11" width="4" height="10" rx="2" ry="2" fill="black"/>
+  <rect x="38" y="58" width="4" height="10" rx="2" ry="2" fill="black"/>
+  <rect x="10" y="38" width="10" height="4" rx="2" ry="2" fill="black"/>
+  <rect x="58" y="38" width="10" height="4" rx="2" ry="2" fill="black"/>
+  <rect x="17.71" y="18" width="4" height="10" rx="2" ry="2" transform="rotate(-45 17.71 17.71)" fill="black"/>
+  <rect x="62.29" y="17.71" width="4" height="10" rx="2" ry="2" transform="rotate(45 62.29 17.71)" fill="black"/>
+  <rect x="17" y="62.29" width="4" height="10" rx="2" ry="2" transform="rotate(-135 17.71 62.29)" fill="black"/>
+  <rect x="62" y="62.29" width="4" height="10" rx="2" ry="2" transform="rotate(135 62.29 62.29)" fill="black"/>
+</svg>
